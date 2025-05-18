@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Dict, List, Set
 
-from .data import ABILITIES, COMP_MATRIX
+from data import ABILITIES, COMP_MATRIX
 
 
 def mask_abilities(env_vector: Dict[str, object]) -> List[int]:

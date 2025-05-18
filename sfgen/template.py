@@ -1,7 +1,7 @@
 from __future__ import annotations
 from typing import Dict
 
-from .data import ABILITIES
+from data import ABILITIES
 
 
 TEMPLATES = {

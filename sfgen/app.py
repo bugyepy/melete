@@ -1,9 +1,9 @@
 import random
 import streamlit as st
 
-from .data import ABILITIES, ENV_PARAMETERS
-from .core import mask_abilities, enumerate_valid_sets
-from .template import render_species
+from data import ABILITIES, ENV_PARAMETERS
+from core import mask_abilities, enumerate_valid_sets
+from template import render_species
 
 
 DEPS = {

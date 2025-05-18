@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import Dict, Any
 from pydantic import BaseModel, validator
 
-from .data import ENV_PARAMETERS
+from data import ENV_PARAMETERS
 
 
 class EnvVector(BaseModel):
