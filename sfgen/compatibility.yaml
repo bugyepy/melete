@@ -1,0 +1,28 @@
+E1_gravity_g:
+  '0.1':
+    L_LongDistanceRun: 0
+  '3':
+    L_LongDistanceRun: -1
+E2_atmosphere:
+  vacuum:
+    F_ControlledFire: -1
+  reducing:
+    F_ControlledFire: 0.5
+E3_surface_temp_C:
+  '-180':
+    S_SweatCooling: 0
+E4_liquid_medium:
+  none:
+    A_Allomothering: 0.5
+E5_radiation_factor:
+  '100':
+    M_ExternalMemory: -1
+E6_energy_gradient:
+  tidal:
+    E_ExponentialEnergy: 1
+E7_metal_silicate:
+  poor:
+    H_PreciseGrasp: 0.5
+E8_tectonics:
+  dead:
+    D_Domestication: 0
