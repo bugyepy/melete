@@ -15,7 +15,7 @@ DEPS = {
     'X_ReactionControl': {'E_EnergyScaling'},
     'K_CumulativeInnovation': {'M_ExternalMemory'},
     'U_MassCoordination': {'T_TheoryOfMind', 'R_SymbolicCommunication'},
-    'D_Domestication': {'H_Manipulation', 'T_TheoryOfMind'},
+    'D_Domestication': {'M_Manipulation', 'T_TheoryOfMind'},
 }
 
 
