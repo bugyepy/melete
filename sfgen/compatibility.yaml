@@ -1,8 +1,8 @@
 E1_gravity_g:
   '0.1':
-    L_LongDistanceRun: 0
+    L_Locomotion: 0
   '3':
-    L_LongDistanceRun: -1
+    L_Locomotion: -1
 E2_atmosphere:
   vacuum:
     F_ControlledFire: -1

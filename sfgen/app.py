@@ -49,6 +49,17 @@ def run() -> None:
     for bitset in sample:
         st.markdown(f"**{bitstring(bitset)}**")
         st.write(render_species(bitset, env))
+        with st.expander("Ability Breakdown"):
+            table_data = [
+                {"Ability": abil, "Present": "yes" if bitset >> idx & 1 else "no"}
+                for idx, abil in enumerate(ABILITIES)
+            ]
+            st.table(table_data)
+            presence = "、".join(
+                f"{abil}は{'ある' if bitset >> idx & 1 else 'ない'}"
+                for idx, abil in enumerate(ABILITIES)
+            )
+            st.write(presence)
         st.divider()
 
 

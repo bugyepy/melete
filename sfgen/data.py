@@ -3,7 +3,7 @@ import yaml
 
 # Ability list
 ABILITIES = [
-    "H_PreciseGrasp", "L_LongDistanceRun", "S_SweatCooling", "F_ControlledFire",
+    "H_PreciseGrasp", "L_Locomotion", "S_SweatCooling", "F_ControlledFire",
     "E_ExponentialEnergy", "M_ExternalMemory", "K_CumulativeCulture",
     "T_TheoryOfMind", "R_RecursiveLanguage", "C_Metacognition",
     "P_LongTermPlanning", "A_Allomothering", "U_MassCooperation",
