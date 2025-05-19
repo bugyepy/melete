@@ -8,7 +8,7 @@ from data import (
     ENV_PARAMETER_NAMES_JA,
 )
 from core import mask_abilities, enumerate_valid_sets
-from template import render_species
+from template import render_species, render_species_llm
 
 
 DEPS = {
@@ -25,11 +25,14 @@ def random_env():
 
 
 def bitstring(bitset: int) -> str:
-    return ''.join('1' if bitset >> i & 1 else '0' for i in range(len(ABILITIES)))
+    return ''.join(
+        '1' if bitset >> i & 1 else '0' for i in range(len(ABILITIES))
+    )
 
 
 def run() -> None:
     st.title("Melete - Species Generator")
+    use_llm = st.checkbox("LLM で説明を生成", value=False)
 
     if 'env' not in st.session_state:
         st.session_state['env'] = random_env()
@@ -54,7 +57,10 @@ def run() -> None:
     st.write("### ランダム種族")
     for bitset in sample:
         st.markdown(f"**{bitstring(bitset)}**")
-        st.write(render_species(bitset, env))
+        if use_llm:
+            st.write(render_species_llm(bitset, env))
+        else:
+            st.write(render_species(bitset, env))
         with st.expander("能力一覧"):
             table_data = [
                 {"能力": ABILITY_NAMES_JA.get(abil, abil),
@@ -63,7 +69,8 @@ def run() -> None:
             ]
             st.table(table_data)
             presence = "、".join(
-                f"{ABILITY_NAMES_JA.get(abil, abil)}は{'ある' if bitset >> idx & 1 else 'ない'}"
+                f"{ABILITY_NAMES_JA.get(abil, abil)}は"
+                f"{'ある' if bitset >> idx & 1 else 'ない'}"
                 for idx, abil in enumerate(ABILITIES)
             )
             st.write(presence)

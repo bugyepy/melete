@@ -2,6 +2,8 @@ from __future__ import annotations
 
 from typing import Dict, List
 
+import openai
+
 from data import ABILITIES, ABILITY_NAMES_JA, ENV_PARAMETER_NAMES_JA
 
 
@@ -90,6 +92,57 @@ SOCIETY_GROUP = {
     "D_Domestication",
 }
 
+COGNITION_GROUP = {
+    "M_ExternalMemory",
+    "K_CumulativeInnovation",
+    "T_TheoryOfMind",
+    "R_SymbolicCommunication",
+    "C_Metacognition",
+}
+
+SOCIETY_GROUP = {
+    "P_LongTermPlanning",
+    "A_Allomothering",
+    "U_MassCoordination",
+    "D_Domestication",
+}
+
+
+def _ability_codes() -> Dict[str, str]:
+    """Return mapping from ability name to short code like 'H1'."""
+    counts: Dict[str, int] = {}
+    codes: Dict[str, str] = {}
+    for name in ABILITIES:
+        prefix = name.split("_")[0][0]
+        counts[prefix] = counts.get(prefix, 0) + 1
+        codes[name] = f"{prefix}{counts[prefix]}"
+    return codes
+
+
+ABILITY_CODES = _ability_codes()
+
+
+def _env_codes() -> Dict[str, str]:
+    """Return mapping from env parameter to code like 'E1'."""
+    codes = {}
+    for key in ENV_PARAMETER_NAMES_JA:
+        codes[key] = key.split("_")[0]
+    return codes
+
+
+ENV_CODES = _env_codes()
+
+
+def _abilities_text(bitset: int, group: set[str]) -> str:
+    """Return annotated ability text for a group."""
+    lines: List[str] = []
+    for i, name in enumerate(ABILITIES):
+        if bitset >> i & 1 and name in group:
+            code = ABILITY_CODES.get(name, name)
+            desc = ABILITY_COMMENTS.get(name, "")
+            lines.append(f"{code}=\u300c{name}\u300d{desc}")
+    return " ".join(lines) if lines else "特筆すべき能力はない。"
+
 
 def _ability_codes() -> Dict[str, str]:
     """Return mapping from ability name to short code like 'H1'."""
@@ -149,3 +202,22 @@ def render_species(bitset: int, env_vector: Dict[str, object]) -> str:
         f"**社会 (Society)**\n{society}",
     ]
     return "\n\n".join(paragraphs)
+
+def render_species_llm(bitset: int, env_vector: Dict[str, object]) -> str:
+    """Generate species description using an LLM via OpenAI."""
+    abilities = [
+        name for i, name in enumerate(ABILITIES) if bitset >> i & 1
+    ]
+    env_desc = ", ".join(f"{k}={v}" for k, v in env_vector.items())
+    abil_desc = ", ".join(abilities)
+    prompt = (
+        "環境パラメータ: "
+        f"{env_desc}\n能力: {abil_desc}\n"
+        "上記を踏まえ、環境・生態・思考・社会を短く説明し、"
+        "各項目に注釈を付けてください。"
+    )
+    res = openai.ChatCompletion.create(
+        model="gpt-3.5-turbo",
+        messages=[{"role": "user", "content": prompt}],
+    )
+    return res.choices[0].message.content.strip()
