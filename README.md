@@ -29,3 +29,9 @@ streamlit run spegen/app.py
 python -m spegen --env KEY=VALUE --top 5
 ```
 `--markdown` を付けると Markdown 形式で出力されます。
+
+`--llm` を付けると OpenAI API を利用して説明文を生成します。
+この機能を使う際は `OPENAI_API_KEY` 環境変数を設定してください。
+
+生成される説明文は環境パラメータと能力を参照し、
+環境・生態・思考・社会の各項目に短い注釈を添えています。
