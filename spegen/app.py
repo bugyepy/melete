@@ -11,7 +11,6 @@ from data import (
 from core import mask_abilities, enumerate_valid_sets
 from template import render_species
 from llm import generate_species_description
-import openai
 
 
 DEPS = {
@@ -67,7 +66,7 @@ def run() -> None:
     sample = st.session_state["samples"]
 
 
-    auto_llm = bool(openai.api_key)
+    auto_llm = bool(os.getenv("OPENAI_API_KEY"))
     st.write("### ランダム種族")
     for bitset in sample:
         st.markdown(f"**{bitstring(bitset)}**")

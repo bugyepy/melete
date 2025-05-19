@@ -2,11 +2,11 @@ from __future__ import annotations
 import os
 from typing import Dict, List
 
-import openai
+from openai import OpenAI
 from dotenv import load_dotenv
 
 load_dotenv()
-openai.api_key = os.getenv("OPENAI_API_KEY")
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 
 def generate_species_description(env: Dict[str, object],
@@ -21,8 +21,8 @@ def generate_species_description(env: Dict[str, object],
         "大まかな種族の概要を述べた後、"
         "環境・生態・思考・社会の各項目を記載してください。"
     )
-    response = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+    response = client.chat.completions.create(
+        model="gpt-4o",
         messages=[{"role": "user", "content": prompt}],
     )
     return response.choices[0].message.content.strip()
