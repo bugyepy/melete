@@ -30,10 +30,10 @@ def main() -> None:
     EnvVector(__root__=env)  # validation
     mask = mask_abilities(env)
     deps = {
-        'F_ControlledFire': {'E_ExponentialEnergy'},
-        'K_CumulativeCulture': {'M_ExternalMemory'},
-        'U_MassCooperation': {'T_TheoryOfMind', 'R_RecursiveLanguage'},
-        'D_Domestication': {'H_PreciseGrasp', 'T_TheoryOfMind'},
+        'X_ReactionControl': {'E_EnergyScaling'},
+        'K_CumulativeInnovation': {'M_ExternalMemory'},
+        'U_MassCoordination': {'T_MentalInference', 'R_SymbolicCommunication'},
+        'D_EcosystemManagement': {'H_Manipulation', 'T_MentalInference'},
     }
     sets = enumerate_valid_sets(mask, deps)
     scored = [(s, score_set(s, env)) for s in sets]
