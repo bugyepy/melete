@@ -5,9 +5,9 @@ from data import ABILITIES, ABILITY_NAMES_JA, ENV_PARAMETER_NAMES_JA
 
 
 TEMPLATES = {
-    'ecology': "この種族は{abilities}を持ち、{env}という環境で繁栄する。",
-    'cognition': "思考様式は{cog}に依拠する。",
-    'society': "社会構造は{soc}を基盤とする。",
+    'ecology': "この種族は {abilities} を持ち、 {env} という環境で繁栄する。",
+    'cognition': "思考様式は {cog} に依拠する。",
+    'society': "社会構造は {soc} を基盤とする。",
 }
 
 
