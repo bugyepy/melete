@@ -9,6 +9,7 @@ from data import (
 )
 from core import mask_abilities, enumerate_valid_sets
 from template import render_species
+from llm import generate_species_description
 
 
 DEPS = {
@@ -55,6 +56,14 @@ def run() -> None:
     for bitset in sample:
         st.markdown(f"**{bitstring(bitset)}**")
         st.write(render_species(bitset, env))
+        if st.button("LLMで詳細生成", key=f"llm-{bitset}"):
+            abil_list = [
+                ABILITY_NAMES_JA.get(name, name)
+                for idx, name in enumerate(ABILITIES)
+                if bitset >> idx & 1
+            ]
+            desc = generate_species_description(env, abil_list)
+            st.write(desc)
         with st.expander("能力一覧"):
             table_data = [
                 {"能力": ABILITY_NAMES_JA.get(abil, abil),
