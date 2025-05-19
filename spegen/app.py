@@ -1,3 +1,4 @@
+import os
 import random
 import streamlit as st
 
@@ -10,6 +11,7 @@ from data import (
 from core import mask_abilities, enumerate_valid_sets
 from template import render_species
 from llm import generate_species_description
+import openai
 
 
 DEPS = {
@@ -26,58 +28,87 @@ def random_env():
 
 
 def bitstring(bitset: int) -> str:
-    return ''.join('1' if bitset >> i & 1 else '0' for i in range(len(ABILITIES)))
+    """Return binary representation for a bitset."""
+    return ''.join(
+        '1' if bitset >> i & 1 else '0'
+        for i in range(len(ABILITIES))
+    )
 
 
 def run() -> None:
+    """Run the Streamlit species generator app."""
     st.title("Melete - Species Generator")
 
-    if 'env' not in st.session_state:
-        st.session_state['env'] = random_env()
+    if "env" not in st.session_state:
+        st.session_state["env"] = random_env()
+    if "samples" not in st.session_state:
+        st.session_state["samples"] = []
+    if "descriptions" not in st.session_state:
+        st.session_state["descriptions"] = {}
 
     if st.button("環境をランダム生成"):
-        st.session_state['env'] = random_env()
+        st.session_state["env"] = random_env()
+        st.session_state["samples"] = []
+        st.session_state["descriptions"] = {}
 
-    env = st.session_state['env']
+    env = st.session_state["env"]
     st.write("### 環境パラメータ")
     env_ja = {ENV_PARAMETER_NAMES_JA.get(k, k): v for k, v in env.items()}
     st.json(env_ja)
 
     mask = mask_abilities(env)
-    sets = enumerate_valid_sets(mask, DEPS)
+    if not st.session_state["samples"]:
+        sets = enumerate_valid_sets(mask, DEPS)
+        if not sets:
+            st.warning("この環境では有効な能力セットがありません。")
+            return
+        st.session_state["samples"] = random.sample(sets, min(10, len(sets)))
 
-    if not sets:
-        st.warning("この環境では有効な能力セットがありません。")
-        return
+    sample = st.session_state["samples"]
 
-    sample = random.sample(sets, min(10, len(sets)))
 
+    auto_llm = bool(openai.api_key)
     st.write("### ランダム種族")
     for bitset in sample:
         st.markdown(f"**{bitstring(bitset)}**")
         st.write(render_species(bitset, env))
-        if st.button("LLMで詳細生成", key=f"llm-{bitset}"):
-            abil_list = [
-                ABILITY_NAMES_JA.get(name, name)
-                for idx, name in enumerate(ABILITIES)
-                if bitset >> idx & 1
-            ]
-            desc = generate_species_description(env, abil_list)
-            st.write(desc)
+
+        if auto_llm:
+            if bitset not in st.session_state["descriptions"]:
+                abil_list = [
+                    ABILITY_NAMES_JA.get(name, name)
+                    for idx, name in enumerate(ABILITIES)
+                    if bitset >> idx & 1
+                ]
+                desc = generate_species_description(env, abil_list)
+                st.session_state["descriptions"][bitset] = desc
+            st.write(st.session_state["descriptions"][bitset])
+        else:
+            if st.button("LLMで詳細生成", key=f"llm-{bitset}"):
+                abil_list = [
+                    ABILITY_NAMES_JA.get(name, name)
+                    for idx, name in enumerate(ABILITIES)
+                    if bitset >> idx & 1
+                ]
+                desc = generate_species_description(env, abil_list)
+                st.write(desc)
+
         with st.expander("能力一覧"):
             table_data = [
-                {"能力": ABILITY_NAMES_JA.get(abil, abil),
-                 "有無": "あり" if bitset >> idx & 1 else "なし"}
+                {
+                    "能力": ABILITY_NAMES_JA.get(abil, abil),
+                    "有無": "あり" if bitset >> idx & 1 else "なし",
+                }
                 for idx, abil in enumerate(ABILITIES)
             ]
             st.table(table_data)
             presence = "、".join(
-                f"{ABILITY_NAMES_JA.get(abil, abil)}は{'ある' if bitset >> idx & 1 else 'ない'}"
+                f"{ABILITY_NAMES_JA.get(abil, abil)}"
+                f"は{'ある' if bitset >> idx & 1 else 'ない'}"
                 for idx, abil in enumerate(ABILITIES)
             )
             st.write(presence)
         st.divider()
-
 
 if __name__ == "__main__":
     run()

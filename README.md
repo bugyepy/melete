@@ -23,6 +23,9 @@ pip install -r requirements.txt
 streamlit run spegen/app.py
 ```
 ブラウザが開き、ランダムな環境と候補種族が最大 10 件表示されます。
+`OPENAI_API_KEY` を `.env` などで設定しておくと、各種族の詳細説明が自動
+生成されます。キーがない場合は、表示されたボタンを押すことで LLM により
+説明を生成できます。
 
 ### CLI で利用する
 ```bash
