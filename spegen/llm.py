@@ -15,11 +15,11 @@ def generate_species_description(env: Dict[str, object],
     env_desc = ", ".join(f"{k}={v}" for k, v in env.items())
     ability_desc = ", ".join(abilities)
     prompt = (
-        "Provide a short overview of a fictional species followed by\n"
-        "evaluations under the headings Environment, Ecology, Cognition "
-        "and Society.\n"
-        f"Environment parameters: {env_desc}.\n"
-        f"Abilities: {ability_desc}."
+        "以下の条件を満たす未知の異星種族を日本語で出力してください。\n"
+        f"環境: {env_desc}\n"
+        f"能力: {ability_desc}\n"
+        "大まかな種族の概要を述べた後、"
+        "環境・生態・思考・社会の各項目を記載してください。"
     )
     response = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
