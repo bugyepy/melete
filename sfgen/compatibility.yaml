@@ -10,7 +10,7 @@ E2_atmosphere:
     X_ReactionControl: 0.5
 E3_surface_temp_C:
   '-180':
-    S_Homeostasis: 0
+    H_Homeostasis: 0
 E4_liquid_medium:
   none:
     A_CooperativeCare: 0.5
@@ -22,7 +22,7 @@ E6_energy_gradient:
     E_EnergyScaling: 1
 E7_metal_silicate:
   poor:
-    H_Manipulation: 0.5
+    M_Manipulation: 0.5
 E8_tectonics:
   dead:
-    D_EcosystemManagement: 0
+    D_Domestication: 0
