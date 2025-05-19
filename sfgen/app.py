@@ -29,7 +29,7 @@ def bitstring(bitset: int) -> str:
 
 
 def run() -> None:
-    st.title("SF種族ジェネレータ")
+    st.title("Melete - Species Generator")
 
     if 'env' not in st.session_state:
         st.session_state['env'] = random_env()
