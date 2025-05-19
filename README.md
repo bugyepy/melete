@@ -29,3 +29,15 @@ streamlit run spegen/app.py
 python -m spegen --env KEY=VALUE --top 5
 ```
 `--markdown` を付けると Markdown 形式で出力されます。
+
+### LLM を利用した詳細な種族生成
+`.env` ファイルに `OPENAI_API_KEY` を設定してください。
+```bash
+OPENAI_API_KEY=your-key
+```
+その後、以下のコマンドで詳細な種族案を生成できます。
+```bash
+python -m spegen.llm --env KEY=VALUE --abilities "能力説明"
+```
+Streamlit アプリでも「LLM で説明を生成」をチェックすると
+各候補種族の説明を LLM が生成します。

@@ -9,6 +9,7 @@ from data import (
 )
 from core import mask_abilities, enumerate_valid_sets
 from template import render_species
+from llm import generate_species
 
 
 DEPS = {
@@ -25,11 +26,16 @@ def random_env():
 
 
 def bitstring(bitset: int) -> str:
-    return ''.join('1' if bitset >> i & 1 else '0' for i in range(len(ABILITIES)))
+    bits = [
+        '1' if bitset >> i & 1 else '0' for i in range(len(ABILITIES))
+    ]
+    return ''.join(bits)
 
 
 def run() -> None:
     st.title("Melete - Species Generator")
+
+    use_llm = st.checkbox("LLM で説明を生成", value=False)
 
     if 'env' not in st.session_state:
         st.session_state['env'] = random_env()
@@ -51,24 +57,34 @@ def run() -> None:
 
     sample = random.sample(sets, min(10, len(sets)))
 
+
+
     st.write("### ランダム種族")
     for bitset in sample:
         st.markdown(f"**{bitstring(bitset)}**")
-        st.write(render_species(bitset, env))
+        if use_llm:
+            abilities = ",".join(
+                name for i, name in enumerate(ABILITIES) if bitset >> i & 1
+            )
+            st.write(generate_species(env, abilities))
+        else:
+            st.write(render_species(bitset, env))
         with st.expander("能力一覧"):
             table_data = [
-                {"能力": ABILITY_NAMES_JA.get(abil, abil),
-                 "有無": "あり" if bitset >> idx & 1 else "なし"}
+                {
+                    "能力": ABILITY_NAMES_JA.get(abil, abil),
+                    "有無": "あり" if bitset >> idx & 1 else "なし",
+                }
                 for idx, abil in enumerate(ABILITIES)
             ]
             st.table(table_data)
             presence = "、".join(
-                f"{ABILITY_NAMES_JA.get(abil, abil)}は{'ある' if bitset >> idx & 1 else 'ない'}"
+                f"{ABILITY_NAMES_JA.get(abil, abil)}は"
+                f"{'ある' if bitset >> idx & 1 else 'ない'}"
                 for idx, abil in enumerate(ABILITIES)
             )
             st.write(presence)
         st.divider()
-
 
 if __name__ == "__main__":
     run()
