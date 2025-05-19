@@ -49,6 +49,18 @@ ENV_PARAMETERS = {
     "E8_tectonics": ["dead", "plate", "continuous_plume"],
 }
 
+# Japanese environment parameter names
+ENV_PARAMETER_NAMES_JA = {
+    "E1_gravity_g": "重力 (g)",
+    "E2_atmosphere": "大気組成",
+    "E3_surface_temp_C": "表面温度 (℃)",
+    "E4_liquid_medium": "液体媒体",
+    "E5_radiation_factor": "放射線レベル",
+    "E6_energy_gradient": "主なエネルギー勾配",
+    "E7_metal_silicate": "金属・ケイ素含有量",
+    "E8_tectonics": "地殻活動",
+}
+
 # Load compatibility matrix from YAML
 _COMP_PATH = os.path.join(os.path.dirname(__file__), "compatibility.yaml")
 if os.path.exists(_COMP_PATH):
