@@ -1,7 +1,12 @@
 import random
 import streamlit as st
 
-from data import ABILITIES, ENV_PARAMETERS, ABILITY_NAMES_JA
+from data import (
+    ABILITIES,
+    ENV_PARAMETERS,
+    ABILITY_NAMES_JA,
+    ENV_PARAMETER_NAMES_JA,
+)
 from core import mask_abilities, enumerate_valid_sets
 from template import render_species
 
@@ -34,7 +39,8 @@ def run() -> None:
 
     env = st.session_state['env']
     st.write("### 環境パラメータ")
-    st.json(env)
+    env_ja = {ENV_PARAMETER_NAMES_JA.get(k, k): v for k, v in env.items()}
+    st.json(env_ja)
 
     mask = mask_abilities(env)
     sets = enumerate_valid_sets(mask, DEPS)
