@@ -1,16 +1,16 @@
 import random
 import streamlit as st
 
-from data import ABILITIES, ENV_PARAMETERS
+from data import ABILITIES, ENV_PARAMETERS, ABILITY_NAMES_JA
 from core import mask_abilities, enumerate_valid_sets
 from template import render_species
 
 
 DEPS = {
-    'F_ControlledFire': {'E_ExponentialEnergy'},
-    'K_CumulativeCulture': {'M_ExternalMemory'},
-    'U_MassCooperation': {'T_TheoryOfMind', 'R_RecursiveLanguage'},
-    'D_Domestication': {'H_PreciseGrasp', 'T_TheoryOfMind'},
+    'X_ReactionControl': {'E_EnergyScaling'},
+    'K_CumulativeInnovation': {'M_ExternalMemory'},
+    'U_MassCoordination': {'T_TheoryOfMind', 'R_SymbolicCommunication'},
+    'D_Domestication': {'H_Manipulation', 'T_TheoryOfMind'},
 }
 
 
@@ -24,31 +24,43 @@ def bitstring(bitset: int) -> str:
 
 
 def run() -> None:
-    st.title("SF Species Generator")
+    st.title("SF種族ジェネレータ")
 
     if 'env' not in st.session_state:
         st.session_state['env'] = random_env()
 
-    if st.button("Randomize Environment"):
+    if st.button("環境をランダム生成"):
         st.session_state['env'] = random_env()
 
     env = st.session_state['env']
-    st.write("### Environment Parameters")
+    st.write("### 環境パラメータ")
     st.json(env)
 
     mask = mask_abilities(env)
     sets = enumerate_valid_sets(mask, DEPS)
 
     if not sets:
-        st.warning("No valid ability sets for this environment.")
+        st.warning("この環境では有効な能力セットがありません。")
         return
 
     sample = random.sample(sets, min(10, len(sets)))
 
-    st.write("### Random Species")
+    st.write("### ランダム種族")
     for bitset in sample:
         st.markdown(f"**{bitstring(bitset)}**")
         st.write(render_species(bitset, env))
+        with st.expander("能力一覧"):
+            table_data = [
+                {"能力": ABILITY_NAMES_JA.get(abil, abil),
+                 "有無": "あり" if bitset >> idx & 1 else "なし"}
+                for idx, abil in enumerate(ABILITIES)
+            ]
+            st.table(table_data)
+            presence = "、".join(
+                f"{ABILITY_NAMES_JA.get(abil, abil)}は{'ある' if bitset >> idx & 1 else 'ない'}"
+                for idx, abil in enumerate(ABILITIES)
+            )
+            st.write(presence)
         st.divider()
 
 
