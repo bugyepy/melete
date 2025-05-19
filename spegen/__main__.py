@@ -5,22 +5,15 @@ from typing import Dict
 
 
 from .core import mask_abilities, enumerate_valid_sets, score_set
-from .template import render_species, render_species_llm
+from .template import render_species
 from .schema import EnvVector
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="SF Species Generator")
-    parser.add_argument(
-        "--env", action="append", default=[], help="Env key=val"
-    )
-    parser.add_argument(
-        "--top", type=int, default=5, help="Number of results"
-    )
-    parser.add_argument(
-        "--markdown", action="store_true", help="Markdown output"
-    )
-    parser.add_argument("--llm", action="store_true", help="Use LLM output")
+    parser.add_argument("--env", action="append", default=[], help="Env key=val")
+    parser.add_argument("--top", type=int, default=5, help="Number of results")
+    parser.add_argument("--markdown", action="store_true", help="Markdown output")
     return parser.parse_args()
 
 
@@ -48,10 +41,7 @@ def main() -> None:
     top = scored[: args.top]
     results = []
     for bitset, score in top:
-        if args.llm:
-            text = render_species_llm(bitset, env)
-        else:
-            text = render_species(bitset, env)
+        text = render_species(bitset, env)
         results.append({"bitset": bitset, "score": score, "text": text})
     if args.markdown:
         for r in results:
