@@ -32,8 +32,8 @@ def main() -> None:
     deps = {
         'X_ReactionControl': {'E_EnergyScaling'},
         'K_CumulativeInnovation': {'M_ExternalMemory'},
-        'U_MassCoordination': {'T_MentalInference', 'R_SymbolicCommunication'},
-        'D_EcosystemManagement': {'H_Manipulation', 'T_MentalInference'},
+        'U_MassCoordination': {'T_TheoryOfMind', 'R_SymbolicCommunication'},
+        'D_Domestication': {'M_Manipulation', 'T_TheoryOfMind'},
     }
     sets = enumerate_valid_sets(mask, deps)
     scored = [(s, score_set(s, env)) for s in sets]
