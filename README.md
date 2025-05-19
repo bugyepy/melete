@@ -29,6 +29,3 @@ streamlit run spegen/app.py
 python -m spegen --env KEY=VALUE --top 5
 ```
 `--markdown` を付けると Markdown 形式で出力されます。
-
-生成される説明文は環境パラメータと能力を参照し、
-環境・生態・思考・社会の各項目に短い注釈を添えています。
