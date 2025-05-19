@@ -1,15 +1,31 @@
-# Melete SF Species Generator
+# Melete Species Generator
 
-This project generates simple science fiction species profiles based on a
-bitmask of abilities and environmental parameters.
+## 構成
 
-A small Streamlit app displays random species for a randomly selected
-environment. Run it with:
+- **requirements.txt** — 必要な Python パッケージを記載しています。
+- **spegen パッケージ**
+  - `app.py` — Streamlit アプリ本体。ランダムに環境を生成し、候補種族を表示します。
+  - `core.py` — 互換性マスク計算やスコアリングなど主要なロジックを提供します。
+  - `data.py` — 環境パラメータと能力の日本語表記を定義します。
+  - `template.py` — 種族説明文のテンプレート処理を行います。
+  - `compatibility.yaml` — 能力と環境の相性を数値で定義したデータファイルです。
+  - `__main__.py` — コマンドラインから種族生成を行うためのインターフェースです。
 
+## 実行方法
+
+### 依存関係のインストール
 ```bash
-streamlit run -m sfgen.app
+pip install -r requirements.txt
 ```
 
-Each run shows the environment parameters and up to ten valid ability
-bitstrings along with brief text descriptions.
-The ability names and environment parameter labels appear in Japanese in the UI.
+### Streamlit アプリを起動する
+```bash
+streamlit run spegen/app.py
+```
+ブラウザが開き、ランダムな環境と候補種族が最大 10 件表示されます。
+
+### CLI で利用する
+```bash
+python -m spegen --env KEY=VALUE --top 5
+```
+`--markdown` を付けると Markdown 形式で出力されます。
