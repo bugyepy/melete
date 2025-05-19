@@ -3,12 +3,39 @@ import yaml
 
 # Ability list
 ABILITIES = [
-    "H_PreciseGrasp", "L_LongDistanceRun", "S_SweatCooling", "F_ControlledFire",
-    "E_ExponentialEnergy", "M_ExternalMemory", "K_CumulativeCulture",
-    "T_TheoryOfMind", "R_RecursiveLanguage", "C_Metacognition",
-    "P_LongTermPlanning", "A_Allomothering", "U_MassCooperation",
-    "D_Domestication"
+    "H_Manipulation",
+    "L_EnduranceLocomotion",
+    "S_Homeostasis",
+    "X_ReactionControl",
+    "E_EnergyScaling",
+    "M_ExternalMemory",
+    "K_CumulativeInnovation",
+    "T_MentalInference",
+    "R_SymbolicCommunication",
+    "C_Metacognition",
+    "P_LongTermPlanning",
+    "A_CooperativeCare",
+    "U_MassCoordination",
+    "D_EcosystemManagement",
 ]
+
+# Japanese ability descriptions
+ABILITY_NAMES_JA = {
+    "H_Manipulation": "外界へ微細かつ精密に力を加えて対象を操作できる能力",
+    "L_EnduranceLocomotion": "長距離を持続的に移動できる高効率の運動能力",
+    "S_Homeostasis": "外部環境の変化に対し内部状態を能動的に安定化させる生理機構",
+    "X_ReactionControl": "高エネルギー反応を制御し物質やエネルギーを変換・抽出する能力",
+    "E_EnergyScaling": "エネルギー利用量を桁違いに拡大可能な社会・技術基盤を構築する能力",
+    "M_ExternalMemory": "情報を身体外部に記録・共有し持続的に参照できる記憶インフラ",
+    "K_CumulativeInnovation": "知識・技術を世代横断的に累積し継続的に改良・再構築する文化的仕組み",
+    "T_MentalInference": "他主体の感情・意図・信念を推定し行動を適応させる認知能力",
+    "R_SymbolicCommunication": "再帰構造を持つ記号体系で無限に新規の意味を創出・伝達する能力",
+    "C_Metacognition": "自己の知覚・思考過程を客観視し戦略的に修正できる能力",
+    "P_LongTermPlanning": "長期的未来を見据え計画を立案・実行する能力",
+    "A_CooperativeCare": "血縁を越えた個体間で子育てを協力的に行う繁殖戦略",
+    "U_MassCoordination": "広域・多数の個体が血縁を超えて共通目標のために協働する社会システム",
+    "D_EcosystemManagement": "異種の生物・システムを選択・改変・維持し自文明の目的に取り込む能力",
+}
 
 # Environment parameter possible values
 ENV_PARAMETERS = {
