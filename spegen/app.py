@@ -61,17 +61,13 @@ def run() -> None:
         if not sets:
             st.warning("この環境では有効な能力セットがありません。")
             return
-        st.session_state["samples"] = random.sample(sets, min(10, len(sets)))
+        st.session_state["samples"] = random.sample(sets, min(3, len(sets)))
 
     sample = st.session_state["samples"]
 
 
     auto_llm = bool(os.getenv("OPENAI_API_KEY"))
-    st.write("### ランダム種族")
     for bitset in sample:
-        st.markdown(f"**{bitstring(bitset)}**")
-        st.write(render_species(bitset, env))
-
         if auto_llm:
             if bitset not in st.session_state["descriptions"]:
                 abil_list = [
@@ -82,17 +78,11 @@ def run() -> None:
                 desc = generate_species_description(env, abil_list)
                 st.session_state["descriptions"][bitset] = desc
             st.write(st.session_state["descriptions"][bitset])
-        else:
-            if st.button("LLMで詳細生成", key=f"llm-{bitset}"):
-                abil_list = [
-                    ABILITY_NAMES_JA.get(name, name)
-                    for idx, name in enumerate(ABILITIES)
-                    if bitset >> idx & 1
-                ]
-                desc = generate_species_description(env, abil_list)
-                st.write(desc)
 
-        with st.expander("能力一覧"):
+        with st.expander("詳細"):
+            st.markdown(f"**{bitstring(bitset)}**")
+            st.write(render_species(bitset, env))
+
             table_data = [
                 {
                     "能力": ABILITY_NAMES_JA.get(abil, abil),
